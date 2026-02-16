@@ -1,0 +1,194 @@
+/* GRBL Controller - Dark Theme Styles */
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Selection colors */
+::selection {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Button active states */
+button:active {
+  transform: scale(0.98);
+}
+
+/* Jog button press effect */
+.jog-button:active {
+  transform: scale(0.95);
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+/* DRO display font */
+.dro-value {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+/* Status indicator pulse */
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.status-pulse {
+  animation: status-pulse 1s ease-in-out infinite;
+}
+
+/* Connection indicator */
+.connection-indicator {
+  position: relative;
+}
+
+.connection-indicator::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0;
+  animation: ripple 1.5s ease-out infinite;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Console text */
+.console-text {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Card hover effect */
+.grbl-card {
+  transition: all 0.2s ease;
+}
+
+.grbl-card:hover {
+  border-color: #475569;
+}
+
+/* Input focus */
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Tab active indicator */
+.tab-active {
+  position: relative;
+}
+
+.tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #3b82f6;
+}
+
+/* Progress bar animation */
+.progress-bar {
+  transition: width 0.3s ease;
+}
+
+/* Toast notification */
+[data-sonner-toast] {
+  font-family: system-ui, -apple-system, sans-serif !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .dro-value {
+    font-size: 1rem;
+  }
+  
+  .jog-button {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+/* Prevent text selection on jog buttons */
+.jog-button {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Hardware acceleration for animations */
+.animate-pulse,
+.status-pulse {
+  will-change: opacity;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Dark mode base */
+body {
+  background-color: #020617;
+  color: #f1f5f9;
+}
+
+/* Button transitions */
+button {
+  transition: all 0.15s ease;
+}
+
+/* Input transitions */
+input,
+textarea,
+select {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Disable tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Touch action for jog controls */
+.jog-control {
+  touch-action: manipulation;
+}
