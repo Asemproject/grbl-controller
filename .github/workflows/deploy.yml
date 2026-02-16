@@ -4,17 +4,25 @@ on:
   push:
     branches: [main]
 
+# 1. Tambahkan ini agar GITHUB_TOKEN punya izin untuk nge-push
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
       - uses: actions/setup-node@v3
         with:
           node-version: 20
+          
       - run: npm ci
       - run: npm run build
+      
       - uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.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 }}
+          # 2. Gunakan variabel ini, JANGAN token asli
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
