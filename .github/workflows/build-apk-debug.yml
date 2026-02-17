@@ -49,8 +49,13 @@ jobs:
       - name: Setup Android SDK & Build Tools
         uses: android-actions/setup-android@v3
         with:
-          api-level: 33
-          build-tools: 33.0.2
+          cmdline-tools-version: "9.0"                # versi cmdline-tools yang diinstall
+          packages: |
+            platform-tools
+            platform;android-33
+            build-tools;33.0.2
+          accept-android-sdk-licenses: true
+          log-accepted-android-sdk-licenses: true
 
       - name: Copy web assets to Android project
         run: npx cap copy android
