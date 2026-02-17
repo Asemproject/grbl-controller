@@ -1,0 +1,72 @@
+name: Build APK (debug)
+
+on:
+  workflow_dispatch:    # bisa dijalankan manual dari Actions tab
+  push:
+    branches: [ "main" ]  # sesuaikan jika pakai branch lain
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_SDK_ROOT: ${{ runner.tool_cache }}/android-sdk
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build web app (Vite)
+        run: npm run build --if-present
+
+      - name: Install Capacitor CLI
+        run: npm install @capacitor/core @capacitor/cli --no-audit --no-fund
+
+      - name: Init Capacitor (if needed) & add android
+        run: |
+          # init/add may fail if already exists; ignore errors
+          npx cap init grbl-controller com.asem.grblcontroller --web-dir=dist || true
+          npx cap add android || true
+
+      - name: Setup Java (JDK 11)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+
+      - name: Install Android SDK & Build Tools
+        uses: r0adkll/setup-android@v2
+        with:
+          api-level: 33
+          target: android-33
+          build-tools: 33.0.2
+
+      - name: Copy web assets to Android project
+        run: npx cap copy android
+
+      - name: Build Debug APK (Gradle)
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: grbl-controller-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
