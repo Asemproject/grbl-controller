@@ -7,7 +7,7 @@
 
 A modern, minimalist PWA (Progressive Web App) for controlling GRBL-based CNC machines. Supports FluidNC and GRBLHAL firmware with WiFi, Bluetooth, and USB connections.
 
-![GRBL Controller](https://asemproject.github.io/grbl-controller/)
+![CNC Controller] (https://asemproject.github.io/grbl-controller/)
 
 ## ✨ Features
 
