@@ -20,22 +20,25 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
 
-      # Pastikan Capacitor Android terinstall
-      - name: Install Capacitor Android
-        run: npm install @capacitor/android
+      # ✅ Install Capacitor CLI & Android
+      - name: Install Capacitor
+        run: |
+          npm install @capacitor/core
+          npm install @capacitor/cli
+          npm install @capacitor/android
 
-      - name: Build Web (Vite)
+      - name: Build Web
         run: npm run build --if-present
 
-      - name: Init Capacitor (if not exists)
+      - name: Init Capacitor (if needed)
         run: npx cap init grbl-controller com.asem.grblcontroller --web-dir=dist || true
 
-      - name: Add Android Platform (if not exists)
+      - name: Add Android Platform
         run: npx cap add android || true
 
-      - name: Sync Capacitor -> Android
+      - name: Sync
         run: npx cap sync android
 
       - name: Show Android SDK info (diagnostic)
