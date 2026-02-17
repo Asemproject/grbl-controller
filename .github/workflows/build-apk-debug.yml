@@ -1,15 +1,13 @@
 name: Build APK (debug)
 
 on:
-  workflow_dispatch:    # bisa dijalankan manual dari Actions tab
+  workflow_dispatch:
   push:
-    branches: [ "main" ]  # sesuaikan jika pakai branch lain
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ANDROID_SDK_ROOT: ${{ runner.tool_cache }}/android-sdk
 
     steps:
       - name: Checkout repository
@@ -39,7 +37,6 @@ jobs:
 
       - name: Init Capacitor (if needed) & add android
         run: |
-          # init/add may fail if already exists; ignore errors
           npx cap init grbl-controller com.asem.grblcontroller --web-dir=dist || true
           npx cap add android || true
 
@@ -63,7 +60,7 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
