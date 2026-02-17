@@ -20,30 +20,40 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
-      # ✅ Pastikan Capacitor Android terinstall
+      # Pastikan Capacitor Android terinstall
       - name: Install Capacitor Android
         run: npm install @capacitor/android
 
-      - name: Build Web
-        run: npm run build || true
+      - name: Build Web (Vite)
+        run: npm run build --if-present
 
       - name: Init Capacitor (if not exists)
         run: npx cap init grbl-controller com.asem.grblcontroller --web-dir=dist || true
 
-      - name: Add Android Platform
+      - name: Add Android Platform (if not exists)
         run: npx cap add android || true
 
-      - name: Sync Capacitor
+      - name: Sync Capacitor -> Android
         run: npx cap sync android
 
-      # ✅ Build APK DEBUG langsung
+      - name: Show Android SDK info (diagnostic)
+        run: |
+          echo "SDK dir listing:"
+          ls -la /usr/local/lib/android || true
+          if command -v sdkmanager >/dev/null 2>&1; then
+            echo "sdkmanager exists:"
+            sdkmanager --list || true
+          else
+            echo "sdkmanager NOT in PATH"
+          fi
+
       - name: Build Debug APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
