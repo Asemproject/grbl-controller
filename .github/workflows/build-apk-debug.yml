@@ -46,11 +46,10 @@ jobs:
           distribution: temurin
           java-version: '11'
 
-      - name: Install Android SDK & Build Tools
-        uses: r0adkll/setup-android@v2
+      - name: Setup Android SDK & Build Tools
+        uses: android-actions/setup-android@v3
         with:
           api-level: 33
-          target: android-33
           build-tools: 33.0.2
 
       - name: Copy web assets to Android project
